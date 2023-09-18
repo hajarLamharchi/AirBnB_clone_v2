@@ -36,8 +36,8 @@ class DBStorage:
         if cls == None:
             data = self.__session.query(State).all()
             data.extend(self.__session.query(City).all())
-            """ data.extend(self.__session.query(User).all())
-            data.extend(self.__session.query(Amenity).all())
+            data.extend(self.__session.query(User).all())
+            """data.extend(self.__session.query(Amenity).all())
             data.extend(self.__session.query(Place).all())
             data.extend(self.__session.query(Review).all())"""
         else:
