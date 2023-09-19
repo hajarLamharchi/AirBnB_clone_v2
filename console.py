@@ -129,8 +129,13 @@ class HBNBCommand(cmd.Cmd):
         for i in kwargs:
             key = i.partition("=")[0]
             value = i.partition("=")[2]
-            param[key] = value.replace('_"', ' ')
-        new_instance = HBNBCommand.classes[c_name](param)
+            if value[0] == "\"":
+                value = value.replace('_', ' ')
+            value = value.replace('"', '')
+            param[key] = value
+        new_instance = HBNBCommand.classes[c_name](**param)
+        """new_instance = eval(c_name)(param)
+        storage.new(new_instance)"""
         new_instance.save()
         print(new_instance.id)
 
