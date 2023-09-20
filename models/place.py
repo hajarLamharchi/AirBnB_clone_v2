@@ -34,7 +34,7 @@ class Place(BaseModel, Base):
                           cascade='all,delete-orphan',uselist=True)
     
     amenities = relationship('Amenity', secondary=place_amenity,
-                             viewonly=False)
+                             viewonly=False, backref='places')
     @property
     def reviews(self):
         """Retrieves a list of Review instances"""
