@@ -8,16 +8,18 @@ from models.amenity import Amenity
 
 
 place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id',
-                                 String(60),
-                                 ForeignKey('places.id'),
-                                 primary_key=True,
-                                 nullable=False),
-                          Column('amenity_id',
-                                 String(60),
-                                 ForeignKey('amenities.id'),
-                                 primary_key=True,
-                                 nullable=False))
+                      Column('place_id',
+                             String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True,
+                             nullable=False),
+                      Column('amenity_id',
+                             String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True,
+                             nullable=False))
+
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
@@ -33,11 +35,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     reviews = relationship('Review', backref='place',
-                          cascade='all,delete-orphan',uselist=True)
-    
+                           cascade='all,delete-orphan', uselist=True)
+
     amenities = relationship('Amenity', secondary=place_amenity,
                              viewonly=False, backref="Place")
     amenity_ids = []
+
     @property
     def reviews(self):
         """Retrieves a list of Review instances"""
@@ -46,9 +49,12 @@ class Place(BaseModel, Base):
 
     @property
     def amenities(self):
-        return [amenity.id for amenity in models.storage.all('Amenity').values()]
+        """ get all amenities """
+        return [amenity.id for amenity
+                in models.storage.all('Amenity').values()]
 
     @amenities.setter
     def amenities(self, amenity):
+        """ set amenity """
         if isinstance(amenity, Amenity):
             self.amenity_ids.append(amenity.id)

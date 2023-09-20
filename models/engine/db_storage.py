@@ -19,14 +19,15 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """Initializes the class attributes and retrieves the environment variables"""
+        """Initializes the class attributes and retrieves the environment
+        variables"""
         url = 'mysql+mysqldb://{}:{}@{}/{}'
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                           .format(os.environ["HBNB_MYSQL_USER"],
-                                   os.environ["HBNB_MYSQL_PWD"],
-                                   os.environ["HBNB_MYSQL_HOST"],
-                                   os.environ["HBNB_MYSQL_DB"]), 
-                           pool_pre_ping=True)
+                                      .format(os.environ["HBNB_MYSQL_USER"],
+                                              os.environ["HBNB_MYSQL_PWD"],
+                                              os.environ["HBNB_MYSQL_HOST"],
+                                              os.environ["HBNB_MYSQL_DB"]),
+                                      pool_pre_ping=True)
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -52,7 +53,7 @@ class DBStorage:
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
-    
+
     def save(self):
         """ commit all changes of the current database session """
         self.__session.commit()
@@ -65,6 +66,7 @@ class DBStorage:
     def reload(self):
         """ create all tables in the database """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
