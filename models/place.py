@@ -1,9 +1,21 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
+from sqlalchemy.orm import relationship
 
 
+place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id',
+                                 String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True,
+                                 nullable=False),
+                          Column('amenity_id',
+                                 String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True,
+                                 nullable=False))
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
@@ -18,4 +30,22 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
-    amenity_ids = []
+    reviews = relationship('Review', backref='place',
+                          cascade='all,delete-orphan',uselist=True)
+    
+    amenities = relationship('Amenity', secondary=place_amenity,
+                             viewonly=False)
+    @property
+    def reviews(self):
+        """Retrieves a list of Review instances"""
+        from models.review import Review
+        return [rev for rev in self.all(Review) if rev.place_id == self.id]
+
+    @property
+    def amenities(self):
+        return [amenity.id for amenity in self.amenities]
+
+    @amenities.setter
+    def amenities(self, amenity):
+        if isinstance(amenity, Amenity):
+            self.amenity_ids.append(amenity.id)
