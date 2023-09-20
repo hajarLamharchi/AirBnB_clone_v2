@@ -3,6 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
+import models
+from models.amenity import Amenity
 
 
 place_amenity = Table('place_amenity', Base.metadata,
@@ -34,7 +36,8 @@ class Place(BaseModel, Base):
                           cascade='all,delete-orphan',uselist=True)
     
     amenities = relationship('Amenity', secondary=place_amenity,
-                             viewonly=False, backref='places')
+                             viewonly=False, backref="Place")
+    amenity_ids = []
     @property
     def reviews(self):
         """Retrieves a list of Review instances"""
@@ -43,7 +46,7 @@ class Place(BaseModel, Base):
 
     @property
     def amenities(self):
-        return [amenity.id for amenity in self.amenities]
+        return [amenity.id for amenity in models.storage.all('Amenity').values()]
 
     @amenities.setter
     def amenities(self, amenity):
