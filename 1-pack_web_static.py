@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This script generates an archive from the contents
     of the web_static folder of your AirBnB Clone repo"""
-from fabric.api import run, sudo, local
+from fabric.api import local
 from datetime import datetime
 
 
