@@ -1,13 +1,27 @@
 #!/usr/bin/python3
 """This script distributes an archive to your web servers"""
-from fabric.api import run, put, env, sudo
+from fabric.api import run, put, env, local, task
 from os.path import exists
+from datetime import datetime
 
 env.hosts = ["52.86.213.205", "52.91.119.144"]
-env.user = "ubuntu"
-env.key_filename = "~/.ssh/id_rsa"
 
 
+@task
+def do_pack():
+    """Generates an archive from the contents of the web_static"""
+    current_datetime = datetime.now().strftime("%Y%m%d%H%M%S")
+    archive = "versions/web_static_{}.tgz".format(current_datetime)
+
+    local("mkdir -p versions")
+    result = local("tar -zcvf {} web_static".format(archive))
+    if result.succeeded:
+        return archive
+    else:
+        return None
+
+
+@task
 def do_deploy(archive_path):
     """Distributes an archive to your web servers"""
 
