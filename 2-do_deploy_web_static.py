@@ -28,6 +28,13 @@ def do_deploy(archive_path):
 
         run('rm /tmp/{}'.format(archive))
 
+        if exists('/data/web_static/releases/{}/web_static'.format(folder)):
+            run(
+                'mv /data/web_static/releases/{}/web_static/* '
+                '/data/web_static/releases/{}/'.format(folder, folder)
+                )
+            run('rm -rf /data/web_static/releases/{}/web_static'.format(folder))
+
         run('rm -rf /data/web_static/current')
 
         run(
