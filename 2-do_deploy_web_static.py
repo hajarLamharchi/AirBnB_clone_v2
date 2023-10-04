@@ -35,17 +35,15 @@ def do_deploy(archive_path):
         folder = archive[:-4]
 
         run("mkdir -p /data/web_static/releases/{}/".format(folder))
+
         run(
             "tar -xzf /tmp/{} "
             "-C /data/web_static/releases/{}/".format(archive, folder)
             )
-
         run("rm /tmp/{}".format(archive))
-
         run("rm -rf /data/web_static/current")
-
         run(
-            "ln -s /data/web_static/releases/{}/ "
+            "ln -s /data/web_static/releases/{}/web_static/ "
             "/data/web_static/current".format(folder)
             )
         return True
