@@ -15,7 +15,7 @@ def do_deploy(archive_path):
         return False
 
     try:
-        put('archive_path', '/tmp/')
+        put(archive_path, '/tmp/')
 
         archive = archive_path.split('/')[-1]
         folder = archive[:-4]
@@ -28,7 +28,7 @@ def do_deploy(archive_path):
 
         run('rm /tmp/{}'.format(archive))
 
-        run('rm - rf /data/web_static/current')
+        run('rm -rf /data/web_static/current')
 
         run(
             'ln -s /data/web_static/releases/{}/ '
