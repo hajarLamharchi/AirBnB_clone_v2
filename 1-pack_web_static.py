@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This script generates an archive from the contents
     of the web_static folder of your AirBnB Clone repo"""
-from fabric.api import run
+from fabric.api import run, sudo, local
 from datetime import datetime
 
 
@@ -10,9 +10,9 @@ def do_pack():
     current_datetime = datetime.now().strftime("%Y%m%d%H%M%S")
     archive = "versions/web_static_{}.tgz".format(current_datetime)
 
-    run("sudo mkdir -p versions")
-    result = run("tar -zcvf {} web_static".format(archive))
+    local("mkdir -p versions")
+    result = local("tar -zcvf {} web_static".format(archive))
     if result.succeeded:
-        return run("sudo readlink archive")
+        return archive
     else:
         return None
