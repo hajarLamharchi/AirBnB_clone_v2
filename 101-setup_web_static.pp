@@ -35,6 +35,7 @@ file { '/data/web_static/current':
   target => '/data/web_static/releases/test',
   owner  => 'ubuntu',
   group  => 'ubuntu',
+  require => File['/data/web_static/releases/test'],
 }
 
 exec { 'configuration':
