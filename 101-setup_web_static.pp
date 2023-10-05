@@ -37,12 +37,13 @@ file { '/data/web_static/current':
   group  => 'ubuntu',
 }
 
--> exec { 'configuration':
+exec { 'configuration':
   command  => "sudo sed -i '/listen 80 default_server;/a\\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}' /etc/nginx/sites-available/default",
   provider => shell,
+  notify  => exec['nginx'],
 }
 
--> exec { 'nginx':
+exec { 'nginx':
   command  => 'sudo service nginx restart',
   provider => shell,
 }
