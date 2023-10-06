@@ -1,19 +1,19 @@
 # Setting web server for deployment with puppet
 
 package { 'nginx':
-  ensure => 'installed',
+  ensure => installed,
 }
 
 -> file { '/data/web_static/releases/test':
-  ensure => 'directory',
+  ensure => directory,
 }
 
 -> file { '/data/web_static/shared':
-  ensure => 'directory',
+  ensure => directory,
 }
 
 -> file { '/data/web_static/releases/test/index.html':
-  ensure  => 'file',
+  ensure  => file,
   content => "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>\n",
 }
 -> exec {'owner':
@@ -22,11 +22,11 @@ package { 'nginx':
 }
 
 -> file { '/data/web_static/current':
-  ensure => 'absent',
+  ensure => absent,
 }
 
 -> file { '/data/web_static/current':
-  ensure => 'link',
+  ensure => link,
   target => '/data/web_static/releases/test',
   owner  => 'ubuntu',
   group  => 'ubuntu',
