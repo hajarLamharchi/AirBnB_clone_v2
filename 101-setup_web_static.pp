@@ -6,24 +6,19 @@ package { 'nginx':
 
 -> file { '/data/web_static/releases/test':
   ensure => 'directory',
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
-  mode   => '0755',
 }
 
 -> file { '/data/web_static/shared':
   ensure => 'directory',
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
-  mode   => '0755',
 }
 
 -> file { '/data/web_static/releases/test/index.html':
   ensure  => 'file',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0644',
   content => "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>\n",
+}
+-> exec {'owner':
+  command  => 'sudo chown -R ubuntu:ubuntu /data/',
+  provider => shell,
 }
 
 -> file { '/data/web_static/current':
