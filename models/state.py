@@ -4,7 +4,6 @@ from models.base_model import BaseModel
 from sqlalchemy import Column, Integer, String, ForeignKey
 from models.base_model import Base
 from sqlalchemy.orm import relationship, Session
-from models import storage
 from models.city import City
 
 
@@ -23,6 +22,7 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         """function documentation"""
+        from models import storage
         cities = []
         all_cities = storage.all(City)
         for city in all_cities.values():
