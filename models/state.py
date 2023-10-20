@@ -13,7 +13,7 @@ class State(BaseModel, Base):
                   nullable=False
                   )
 
-    """cities = relationship('City',
+    cities = relationship('City',
                           backref='state',
                           cascade='all,delete-orphan',
                           uselist=True)
@@ -22,4 +22,3 @@ class State(BaseModel, Base):
         session = Session(engine)
         states = session.query(City).filter(City.state_id == id).all()
         return states
-        """
