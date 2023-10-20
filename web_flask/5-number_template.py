@@ -44,7 +44,7 @@ def is_number(n):
 def template(n):
     """displays an htmml page"""
     if n.isdigit():
-        return render_template('5-number.html')
+        return render_template('5-number.html', n=n)
     else:
         abort(404)
 
