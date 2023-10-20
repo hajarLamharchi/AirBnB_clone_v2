@@ -42,13 +42,14 @@ class DBStorage:
         if cls is None:
             classes = [State, City, User, Amenity, Place, Review]
         else:
-            classes = [eval(cls)]
-        data = []
+            classes = [cls]
+        data = {}
         for clas in classes:
-            data.extend(self.__session.query(clas).all())
-        print(data)
-        return {"{}.{}".format(clas.__name__,
-                               d.id): d for clas in classes for d in data}
+            result = self.__session.query(clas).all()
+            for obj in result:
+                key = "{}.{}".format(clas.__name__, obj.id)
+                data[key] = obj
+        return data
 
     def new(self, obj):
         """add the object to the current database session"""
@@ -72,5 +73,5 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """function docs"""
-        self.__session.remove()
+        """documented func"""
+        return self.__session.close()
