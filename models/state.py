@@ -3,7 +3,9 @@
 from models.base_model import BaseModel
 from sqlalchemy import Column, Integer, String, ForeignKey
 from models.base_model import Base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Session
+from models import storage
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -17,8 +19,13 @@ class State(BaseModel, Base):
                           backref='state',
                           cascade='all,delete-orphan',
                           uselist=True)
+
     @property
     def cities(self):
-        session = Session(engine)
-        states = session.query(City).filter(City.state_id == id).all()
-        return states
+        """function documentation"""
+        cities = []
+        all_cities = storage.all(City)
+        for city in all_cities.values():
+            if city.state_id == self.id:
+                cities.append(city)
+        return cities
