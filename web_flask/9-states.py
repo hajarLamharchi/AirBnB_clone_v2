@@ -81,10 +81,9 @@ def states(id=None):
     """displays an HTML page"""
     states = storage.all(State)
     if id is not None:
-        state = states.get(id)
-        if state:
-            return render_template('9-states.html', states=states, id=id)
-        else:
+        for state in states.values():
+            if state.id == id:
+                return render_template('9-states.html', states=states, id=id)
             return render_template('9-states.html', states=None, id=id)
     return render_template('9-states.html', states=states, id=None)
 
