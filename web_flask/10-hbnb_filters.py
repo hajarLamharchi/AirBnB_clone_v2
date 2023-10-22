@@ -94,8 +94,8 @@ def states(id=None):
 def hbnb_filters():
     """displays hbnb web page"""
     states = storage.all(State)
-    amenity = storage.all(Amenity)
-    return render_template('10-hbnb_filters.html', states=states, amenity=amenity)
+    amenities = storage.all(Amenity)
+    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
 
 
 @app.teardown_appcontext
